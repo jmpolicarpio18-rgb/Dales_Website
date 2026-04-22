@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&family=Inter:wght@400;500;600;700&family=Michroma&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-logo: "Michroma", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand-primary: #09090b; /* Pure Black / Dark Charcoal (Zinc 950) */
+  --color-brand-accent: #dc2626; /* Racing Red (Red 600) */
+  --color-brand-surface: #ffffff; /* Crisp White */
+  --color-brand-muted: #f8fafc; /* Slate 50 */
+  --color-brand-border: #e2e8f0; /* Steel Gray (Slate 200) */
+  --color-brand-industrial: #64748b; /* Machine Gray (Slate 500) */
+}
+
+@layer base {
+  body {
+    @apply font-sans text-brand-primary bg-white selection:bg-brand-accent selection:text-white;
+  }
+}
+
+.industrial-card {
+  @apply bg-white border border-brand-border transition-all duration-300;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.graphite-base {
+  @apply bg-[#111827]; /* Slate 900 / Graphite */
+}
+
+.rugged-border {
+  @apply border-2 border-brand-primary;
+}
+
+.metal-gradient {
+  background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+}
+
+.industrial-grid {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.workshop-bg {
+  @apply relative;
+}
+
+.workshop-bg::before {
+  content: "";
+  @apply absolute inset-0 opacity-[0.03] pointer-events-none;
+  background-image: url("https://www.transparenttextures.com/patterns/brushed-alum.png");
+}
+
+/* Custom scrollbar - Automotive Style */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-brand-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-border);
+  border: 3px solid var(--color-brand-surface);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-accent);
+}
