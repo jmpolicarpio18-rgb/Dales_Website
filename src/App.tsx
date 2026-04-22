@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, FormEvent } from 'react';
 import { 
   Phone, 
   MapPin, 
@@ -114,14 +114,16 @@ const PRODUCTS: Product[] = [
 ];
 
 const GALLERY_IMAGES: GalleryImage[] = [
-  { id: 'g1', url: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=2070", category: 'Motorcycles', span: "col-span-2 row-span-2" },
-  { id: 'g2', url: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2070", category: 'Vehicles', span: "col-span-1 row-span-1" },
-  { id: 'g3', url: "https://images.unsplash.com/photo-1635350736475-c8cc13eca0a2?q=80&w=2070", category: 'Products', span: "col-span-1 row-span-1" },
-  { id: 'g4', url: "https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?q=80&w=1974", category: 'Classics', span: "col-span-2 row-span-1" },
-  { id: 'g5', url: "https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=1974", category: 'Store', span: "col-span-1 row-span-1" },
-  { id: 'g6', url: "https://images.unsplash.com/photo-1502744691474-9521b1b50c76?q=80&w=2070", category: 'Vehicles', span: "col-span-1 row-span-1" },
-  { id: 'g7', url: "https://images.unsplash.com/photo-1594976612318-96109a200925?q=80&w=2070", category: 'Motorcycles', span: "col-span-1 row-span-1" },
-  { id: 'g8', url: "https://images.unsplash.com/photo-1598501479156-5088686e08c6?q=80&w=2070", category: 'Classics', span: "col-span-1 row-span-1" },
+  { id: 'g1', url: "/car 1.jpg", category: 'Vehicles', span: "col-span-2 row-span-2" },
+  { id: 'g2', url: "/Motorcycle 1.jpg", category: 'Motorcycles', span: "col-span-1 row-span-1" },
+  { id: 'g3', url: "/Truck (2).png", category: 'Vehicles', span: "col-span-1 row-span-1" },
+  { id: 'g4', url: "/car 3.jpg", category: 'Vehicles', span: "col-span-2 row-span-1" },
+  { id: 'g5', url: "/motorcycle 2.jpg", category: 'Motorcycles', span: "col-span-1 row-span-1" },
+  { id: 'g6', url: "/car 4.jpg", category: 'Vehicles', span: "col-span-1 row-span-1" },
+  { id: 'g7', url: "/Store.png", category: 'Store', span: "col-span-1 row-span-1" },
+  { id: 'g8', url: "/Trailer.png", category: 'Vehicles', span: "col-span-1 row-span-1" },
+  { id: 'g9', url: "/Guitar.png", category: 'Products', span: "col-span-1 row-span-1" },
+  { id: 'g10', url: "/Store 1.png", category: 'Store', span: "col-span-1 row-span-1" },
 ];
 
 const FAQS = [
@@ -141,6 +143,7 @@ export default function App() {
   const [formService, setFormService] = useState('');
   const [formDetails, setFormDetails] = useState('');
   const [isWizardVisible, setIsWizardVisible] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const quoteRef = useRef<HTMLDivElement>(null);
   const detailsRef = useRef<HTMLTextAreaElement>(null);
@@ -181,6 +184,15 @@ export default function App() {
   const resetWizard = () => {
     setWizardStep(0);
     setWizardData({ surface: '', need: '', size: '', support: '' });
+  };
+
+  const handleFormSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsSubmitted(false);
+      setFormDetails('');
+    }, 5000);
   };
 
   return (
@@ -224,7 +236,7 @@ export default function App() {
             {['Services', 'Products', 'Gallery', 'Contact'].map((item) => (
               <a 
                 key={item} 
-                href={`#${item.toLowerCase().replace(' ', '-')}`} 
+                href={item === 'Contact' ? '#quote-request' : `#${item.toLowerCase().replace(' ', '-')}`} 
                 className="text-brand-primary/60 hover:text-brand-accent transition-colors relative group"
               >
                 {item}
@@ -279,11 +291,20 @@ export default function App() {
 
       <main>
         {/* Who We Serve Section */}
-        <section className="py-24 bg-white px-6 border-b border-brand-border">
-           <div className="max-w-7xl mx-auto">
+        <section 
+          className="relative py-32 px-6 border-b border-brand-border bg-brand-primary overflow-hidden"
+          style={{ 
+            backgroundImage: 'linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)), url("/Store 1.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
+          }}
+        >
+           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+           <div className="max-w-7xl mx-auto relative z-10">
               <div className="mb-16 text-center">
-                 <h2 className="text-4xl md:text-6xl font-display font-black uppercase text-brand-primary tracking-tighter mb-4">Who We Serve</h2>
-                 <p className="text-brand-primary/40 font-bold uppercase tracking-widest text-[10px]">Built for the automotive professional & enthusiast</p>
+                 <h2 className="text-4xl md:text-6xl font-display font-black uppercase text-white tracking-tighter mb-4">Who We Serve</h2>
+                 <p className="text-brand-accent font-bold uppercase tracking-widest text-[10px]">Built for the automotive professional & enthusiast</p>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
                  {[
@@ -293,11 +314,11 @@ export default function App() {
                    { id: "enthusiasts", label: "Enthusiasts", icon: Sparkles },
                    { label: "DIY Painters", icon: HardHat }
                  ].map((item, idx) => (
-                   <div key={idx} className="bg-brand-muted p-8 border border-brand-border flex flex-col items-center text-center group hover:border-brand-accent transition-all shadow-sm">
-                      <div className="w-14 h-14 bg-brand-primary flex items-center justify-center mb-6 group-hover:bg-brand-accent transition-colors">
+                   <div key={idx} className="bg-white/5 backdrop-blur-sm p-8 border border-white/10 flex flex-col items-center text-center group hover:border-brand-accent transition-all shadow-sm">
+                      <div className="w-14 h-14 bg-brand-primary border border-white/10 flex items-center justify-center mb-6 group-hover:bg-brand-accent transition-colors">
                          <item.icon size={24} className="text-white" />
                       </div>
-                      <span className="font-display font-black uppercase text-sm tracking-widest text-brand-primary">{item.label}</span>
+                      <span className="font-display font-black uppercase text-sm tracking-widest text-white">{item.label}</span>
                    </div>
                  ))}
               </div>
@@ -328,10 +349,19 @@ export default function App() {
                       </div>
                       <h3 className="text-xl font-display font-black uppercase text-brand-primary mb-4 leading-tight">{update.title}</h3>
                       <p className="text-brand-primary/60 text-sm font-medium leading-relaxed">{update.desc}</p>
-                      <div className="mt-8 pt-6 border-t border-brand-border flex items-center justify-between group cursor-pointer">
-                         <span className="text-[9px] font-bold uppercase tracking-widest text-brand-primary/40 group-hover:text-brand-primary transition-colors">Details</span>
-                         <ArrowRight size={12} className="text-brand-accent group-hover:translate-x-1 transition-transform" />
-                      </div>
+                       <button 
+                         onClick={() => {
+                           if (update.type === 'alert') {
+                             document.getElementById('contact-info')?.scrollIntoView({ behavior: 'smooth' });
+                           } else {
+                             document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+                           }
+                         }}
+                         className="w-full mt-8 pt-6 border-t border-brand-border flex items-center justify-between group cursor-pointer"
+                       >
+                          <span className="text-[9px] font-bold uppercase tracking-widest text-brand-primary/40 group-hover:text-brand-primary transition-colors">Details</span>
+                          <ArrowRight size={12} className="text-brand-accent group-hover:translate-x-1 transition-transform" />
+                       </button>
                    </div>
                  ))}
               </div>
@@ -386,7 +416,7 @@ export default function App() {
             >
                <div className="relative z-10">
                   <div className="h-[550px] border-4 border-white/10 overflow-hidden shadow-2xl relative">
-                     <img src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=2070" className="w-full h-full object-cover grayscale-[0.5] hover:grayscale-0 transition-all duration-700" alt="Custom automotive painting" />
+                     <img src="/spray painy.png" className="w-full h-full object-cover grayscale-[0.5] hover:grayscale-0 transition-all duration-700" alt="Master the finish with precision tools" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
                   <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-brand-accent border-4 border-[#111827] flex items-center justify-center p-8 text-white shadow-xl">
@@ -670,7 +700,13 @@ export default function App() {
                     <p className="text-brand-primary/40 font-medium text-sm mb-10 leading-relaxed">{product.description}</p>
                     <div className="flex items-center justify-between mt-auto pt-6 border-t border-brand-border">
                        <span className="font-mono text-xs text-brand-industrial font-bold uppercase tracking-wider">Tier: {product.priceRange}</span>
-                       <button className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-primary/60 group-hover:text-brand-accent transition-colors">
+                       <button 
+                         onClick={() => {
+                           setFormDetails(`Inquiry: Technical data requested for ${product.name}. Application: `);
+                           scrollToQuote();
+                         }}
+                         className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-primary/60 group-hover:text-brand-accent transition-colors"
+                       >
                           Technical Specs <ArrowRight size={14} />
                        </button>
                     </div>
@@ -718,12 +754,15 @@ export default function App() {
                         className={`${img.span} relative group overflow-hidden border border-brand-border aspect-square shadow-sm hover:shadow-xl transition-shadow duration-500`}
                       >
                         <img 
-                          src={`${img.url}&auto=format&fit=crop`} 
+                          src={img.url.startsWith('http') ? `${img.url}&auto=format&fit=crop` : img.url} 
                           className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
                           alt="Paint finish result" 
                           referrerPolicy="no-referrer"
                         />
-                        <div className="absolute inset-0 bg-brand-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-6 text-center">
+                        <div 
+                          onClick={() => window.open(img.url, '_blank')}
+                          className="absolute inset-0 bg-brand-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-6 text-center cursor-pointer"
+                        >
                            <div className="w-12 h-12 bg-brand-accent rounded-full flex items-center justify-center text-white mb-4 shadow-lg">
                              <Search size={20} />
                            </div>
@@ -812,7 +851,28 @@ export default function App() {
               </div>
 
               <div className="p-4 md:p-8">
-                 <form onSubmit={(e) => e.preventDefault()} className="grid grid-cols-2 gap-6">
+                 {isSubmitted ? (
+                   <motion.div 
+                     initial={{ opacity: 0, scale: 0.9 }}
+                     animate={{ opacity: 1, scale: 1 }}
+                     className="h-full flex flex-col items-center justify-center text-center p-12 bg-white border border-brand-border shadow-xl"
+                   >
+                     <div className="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-8 border border-green-200">
+                       <CheckCircle2 size={40} className="animate-bounce" />
+                     </div>
+                     <h3 className="text-3xl font-display font-black uppercase text-brand-primary mb-4">Transmission Received</h3>
+                     <p className="text-brand-primary/60 font-medium max-w-sm mb-8">
+                       Our technical team has been notified. Expect a dispatch within 12 business hours.
+                     </p>
+                     <button 
+                       onClick={() => setIsSubmitted(false)}
+                       className="px-8 py-4 bg-brand-primary text-white font-bold uppercase tracking-widest text-[10px] hover:bg-brand-accent transition-colors"
+                     >
+                       Send Another Request
+                     </button>
+                   </motion.div>
+                 ) : (
+                   <form onSubmit={handleFormSubmit} className="grid grid-cols-2 gap-6">
                     <div className="col-span-2 md:col-span-1">
                        <label className="block text-[10px] font-bold uppercase tracking-[0.2em] mb-3 text-brand-primary/40">Full Name</label>
                        <input type="text" placeholder="John Doe" className="w-full bg-white border border-brand-border focus:border-brand-accent p-4 text-brand-primary outline-none transition-all font-medium" />
@@ -848,6 +908,7 @@ export default function App() {
                        </button>
                     </div>
                  </form>
+                )}
               </div>
            </div>
         </section>
@@ -899,13 +960,13 @@ export default function App() {
                   Expert automotive paint supplies and precision color matching since 1990. Supporting the Colorado Springs automotive community.
                </p>
                <div className="flex gap-4">
-                  <a href="https://facebook.com" target="_blank" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:border-brand-accent transition-all text-white/40 hover:text-white" title="Facebook">
+                  <a href="https://www.facebook.com/dalespaint/" target="_blank" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:border-brand-accent transition-all text-white/40 hover:text-white" title="Facebook">
                      <Facebook size={18} />
                   </a>
-                  <a href="https://instagram.com" target="_blank" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:border-brand-accent transition-all text-white/40 hover:text-white" title="Instagram">
+                  <a href="https://www.facebook.com/dalespaint/" target="_blank" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:border-brand-accent transition-all text-white/40 hover:text-white" title="Instagram">
                      <Instagram size={18} />
                   </a>
-                  <a href="https://linkedin.com" target="_blank" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:border-brand-accent transition-all text-white/40 hover:text-white" title="LinkedIn">
+                  <a href="https://www.facebook.com/dalespaint/" target="_blank" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:border-brand-accent transition-all text-white/40 hover:text-white" title="LinkedIn">
                      <Linkedin size={18} />
                   </a>
                   <a href="https://maps.google.com/?q=515+N+Circle+Dr+Colorado+Springs+CO+80909" target="_blank" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:border-brand-accent transition-all text-white/40 hover:text-white" title="View Map">
@@ -915,50 +976,62 @@ export default function App() {
             </div>
 
             <div>
-               <h4 className="font-bold uppercase tracking-[0.2em] text-[10px] mb-8 text-brand-accent">Quick Links</h4>
+               <h4 className="font-bold uppercase tracking-[0.2em] text-[10px] mb-8 text-brand-accent">Technical Hub</h4>
                <ul className="space-y-4 font-bold uppercase tracking-[0.1em] text-[11px] text-white/40">
                   <li><a href="#services" className="hover:text-white transition-colors">Technical Units</a></li>
                   <li><a href="#products" className="hover:text-white transition-colors">Inventory Hub</a></li>
                   <li><a href="#gallery" className="hover:text-white transition-colors">Project Gallery</a></li>
                   <li><a href="#quote-request" className="hover:text-white transition-colors">Place Order</a></li>
+                  <li><a href="#updates" className="hover:text-white transition-colors">Shop Status</a></li>
+               </ul>
+            </div>
+
+            <div>
+               <h4 className="font-bold uppercase tracking-[0.2em] text-[10px] mb-8 text-brand-accent">Company</h4>
+               <ul className="space-y-4 font-bold uppercase tracking-[0.1em] text-[11px] text-white/40">
+                  <li><a href="#gallery" className="hover:text-white transition-colors">About Us</a></li>
+                  <li><a href="#quote-request" className="hover:text-white transition-colors">Careers</a></li>
+                  <li><a href="#updates" className="hover:text-white transition-colors">Blog & News</a></li>
+                  <li><a href="#contact-info" className="hover:text-white transition-colors">Support Center</a></li>
+                  <li><a href="#services" className="hover:text-white transition-colors">Trade Programs</a></li>
                </ul>
             </div>
 
             <div id="contact-info">
-               <h4 className="font-bold uppercase tracking-[0.2em] text-[10px] mb-8 text-brand-accent">Direct Contact</h4>
-               <div className="space-y-6 text-white/40 font-bold uppercase tracking-[0.1em] text-[11px]">
-                  <div className="flex items-start gap-4">
-                     <MapPin size={18} className="text-brand-accent" />
-                     <span>515 N Circle Dr<br />Colorado Springs, CO 80909</span>
+               <h4 className="font-bold uppercase tracking-[0.2em] text-[10px] mb-8 text-brand-accent">Logistics</h4>
+               <div className="space-y-8">
+                  <div className="space-y-4 text-white/40 font-bold uppercase tracking-[0.1em] text-[11px]">
+                     <div className="flex items-start gap-4">
+                        <MapPin size={18} className="text-brand-accent" />
+                        <span>515 N Circle Dr<br />Colorado Springs, CO 80909</span>
+                     </div>
+                     <div className="flex items-center gap-4">
+                        <Phone size={18} className="text-brand-accent" />
+                        <span>(719) 636-2635</span>
+                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                     <Phone size={18} className="text-brand-accent" />
-                     <span>(719) 636-2635</span>
-                  </div>
-               </div>
-            </div>
 
-            <div>
-               <h4 className="font-bold uppercase tracking-[0.2em] text-[10px] mb-8 text-brand-accent">Shop Hours</h4>
-               <div className="space-y-4 text-white/40 font-bold uppercase tracking-[0.1em] text-[11px]">
-                  <div className="flex justify-between border-b border-white/5 pb-2">
-                     <span>Mon-Fri</span>
-                     <span className="text-white">08:00 - 17:30</span>
-                  </div>
-                  <div className="flex justify-between border-b border-white/5 pb-2 text-brand-accent">
-                     <span>Sat-Sun</span>
-                     <span>CLOSED</span>
+                  <div className="space-y-4 text-white/40 font-bold uppercase tracking-[0.1em] text-[11px] border-t border-white/5 pt-6">
+                     <div className="text-brand-accent text-[9px] tracking-widest mb-2">Operational Hours</div>
+                     <div className="flex justify-between border-b border-white/5 pb-2">
+                        <span>Mon-Fri</span>
+                        <span className="text-white">08:00 - 17:30</span>
+                     </div>
+                     <div className="flex justify-between border-b border-white/5 pb-2 text-white/20">
+                        <span>Sat-Sun</span>
+                        <span>CLOSED</span>
+                     </div>
                   </div>
                </div>
             </div>
          </div>
 
          <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <span className="text-[10px] font-bold text-white/20 uppercase tracking-widest">&copy; 2026 Dales Auto Paint // Colorado Springs</span>
+            <span className="text-[10px] font-bold text-white/20 uppercase tracking-widest">&copy; 2026 Dales Automotive Paint Equipment and Supplies</span>
             <div className="flex gap-8 text-[10px] font-bold text-white/20 uppercase tracking-widest">
-               <a href="#" className="hover:text-white">Privacy</a>
-               <a href="#" className="hover:text-white">Terms</a>
-               <a href="#" className="hover:text-white">TDS Search</a>
+               <a href="#contact-info" className="hover:text-white">Privacy</a>
+               <a href="#contact-info" className="hover:text-white">Terms</a>
+               <a href="#products" className="hover:text-white">TDS Search</a>
             </div>
          </div>
       </footer>
