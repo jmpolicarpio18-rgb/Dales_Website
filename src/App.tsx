@@ -271,7 +271,7 @@ export default function App() {
               {['Services', 'Products', 'Quote Request', 'Contact'].map((item) => (
                 <a 
                   key={item}
-                  href={`#${item.toLowerCase().replace(' ', '-')}`} 
+                  href={item === 'Contact' ? '#quote-request' : `#${item.toLowerCase().replace(' ', '-')}`} 
                   onClick={() => setIsMenuOpen(false)} 
                   className="font-black uppercase tracking-widest text-xs text-brand-primary/60 hover:text-brand-accent py-2 border-b border-brand-border/50"
                 >
@@ -308,18 +308,27 @@ export default function App() {
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
                  {[
-                   { label: "Body Shops", icon: Factory },
-                   { label: "Custom Builders", icon: Paintbrush },
-                   { label: "Restorers", icon: Hammer },
-                   { id: "enthusiasts", label: "Enthusiasts", icon: Sparkles },
-                   { label: "DIY Painters", icon: HardHat }
+                   { label: "Body Shops", icon: Factory, note: "Collision Division" },
+                   { label: "Custom Builders", icon: Paintbrush, note: "Elite Finish Division" },
+                   { label: "Restorers", icon: Hammer, note: "Retro-Match Division" },
+                   { id: "enthusiasts", label: "Enthusiasts", icon: Sparkles, note: "Custom Colors" },
+                   { label: "DIY Painters", icon: HardHat, note: "Product Support" }
                  ].map((item, idx) => (
-                   <div key={idx} className="bg-white/5 backdrop-blur-sm p-8 border border-white/10 flex flex-col items-center text-center group hover:border-brand-accent transition-all shadow-sm">
+                   <button 
+                     key={idx} 
+                     onClick={() => {
+                       setFormService(item.label.includes('Shops') ? 'Body Shop Supply' : 'Custom Paint/Mixed');
+                       setFormDetails(`Inquiry submitted from ${item.label} professional portal. Priority audit requested.`);
+                       scrollToQuote();
+                     }}
+                     className="bg-white/5 backdrop-blur-sm p-8 border border-white/10 flex flex-col items-center text-center group hover:border-brand-accent hover:bg-white/10 transition-all shadow-sm cursor-pointer"
+                   >
                       <div className="w-14 h-14 bg-brand-primary border border-white/10 flex items-center justify-center mb-6 group-hover:bg-brand-accent transition-colors">
                          <item.icon size={24} className="text-white" />
                       </div>
-                      <span className="font-display font-black uppercase text-sm tracking-widest text-white">{item.label}</span>
-                   </div>
+                      <span className="font-display font-black uppercase text-sm tracking-widest text-white mb-2">{item.label}</span>
+                      <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-white/30 group-hover:text-brand-accent transition-colors">{item.note}</span>
+                   </button>
                  ))}
               </div>
            </div>
@@ -516,7 +525,19 @@ export default function App() {
                           </ul>
                         </div>
 
-                        {selectedService.id === 'matching' && (
+                         <div className="space-y-4">
+                            <button 
+                              onClick={() => {
+                                setFormService(selectedService.title);
+                                setFormDetails(`Requesting technical support deployment for ${selectedService.title} unit.`);
+                                scrollToQuote();
+                              }}
+                              className="w-full py-4 bg-brand-primary text-white font-black uppercase tracking-widest text-[10px] hover:bg-brand-accent transition-all flex items-center justify-center gap-3 mt-8 shadow-lg"
+                            >
+                               Start {selectedService.title} Estimate <ArrowRight size={14} />
+                            </button>
+                            
+                            {selectedService.id === 'matching' && (
                           <div className="mt-10 pt-10 border-t border-brand-border">
                              <div className="text-[9px] font-black uppercase text-brand-accent/50 mb-4 tracking-[0.2em]">Spectral Calibration Status</div>
                              <div className="flex items-end gap-1.5 h-10">
@@ -534,7 +555,8 @@ export default function App() {
                         )}
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
+                </motion.div>
                 </AnimatePresence>
               </div>
             </div>
@@ -786,14 +808,28 @@ export default function App() {
                        Don't guess on your restoration. Our on-site experts help you choose the right materials, mix the perfect color, and follow the correct prep protocols for a professional result.
                     </p>
                     <div className="grid sm:grid-cols-2 gap-6">
-                       <div className="p-6 bg-white/5 border border-white/10 rounded-sm">
+                       <button 
+                         onClick={() => {
+                           setFormService('Consultation/Training');
+                           setFormDetails('Inquiry: Material Audit requested for on-site assessment.');
+                           scrollToQuote();
+                         }}
+                         className="p-6 bg-white/5 border border-white/10 rounded-sm text-left hover:border-brand-accent hover:bg-white/10 transition-all group"
+                       >
                           <h4 className="font-bold text-brand-accent uppercase tracking-widest text-[10px] mb-3">Material Audits</h4>
-                          <p className="text-white/50 text-xs font-medium">Bring your parts in for a full assessment of required coatings and prep steps.</p>
-                       </div>
-                       <div className="p-6 bg-white/5 border border-white/10 rounded-sm">
+                          <p className="text-white/50 text-xs font-medium group-hover:text-white/80 transition-colors">Bring your parts in for a full assessment of required coatings and prep steps.</p>
+                       </button>
+                       <button 
+                         onClick={() => {
+                           setFormService('Technical Matching');
+                           setFormDetails('Inquiry: Spectral Scanning requested for custom color formula.');
+                           scrollToQuote();
+                         }}
+                         className="p-6 bg-white/5 border border-white/10 rounded-sm text-left hover:border-brand-accent hover:bg-white/10 transition-all group"
+                       >
                           <h4 className="font-bold text-brand-accent uppercase tracking-widest text-[10px] mb-3">Spectral Scanning</h4>
-                          <p className="text-white/50 text-xs font-medium">Digital spectrophotometry for perfect color matching of aged or custom paints.</p>
-                       </div>
+                          <p className="text-white/50 text-xs font-medium group-hover:text-white/80 transition-colors">Digital spectrophotometry for perfect color matching of aged or custom paints.</p>
+                       </button>
                     </div>
                  </div>
                  <div className="relative">
@@ -903,7 +939,7 @@ export default function App() {
                        />
                     </div>
                     <div className="col-span-2 pt-4">
-                       <button className="w-full py-5 bg-brand-primary text-white font-bold uppercase tracking-[0.3em] text-xs hover:bg-brand-accent transition-all shadow-lg active:scale-95">
+                       <button type="submit" className="w-full py-5 bg-brand-primary text-white font-bold uppercase tracking-[0.3em] text-xs hover:bg-brand-accent transition-all shadow-lg active:scale-95">
                           Send Inquiry
                        </button>
                     </div>
