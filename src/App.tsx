@@ -114,16 +114,16 @@ const PRODUCTS: Product[] = [
 ];
 
 const GALLERY_IMAGES: GalleryImage[] = [
-  { id: 'g1', url: "/car 1.jpg", category: 'Vehicles', span: "col-span-2 row-span-2" },
-  { id: 'g2', url: "/Motorcycle 1.jpg", category: 'Motorcycles', span: "col-span-1 row-span-1" },
-  { id: 'g3', url: "/Truck (2).png", category: 'Vehicles', span: "col-span-1 row-span-1" },
-  { id: 'g4', url: "/car 3.jpg", category: 'Vehicles', span: "col-span-2 row-span-1" },
-  { id: 'g5', url: "/motorcycle 2.jpg", category: 'Motorcycles', span: "col-span-1 row-span-1" },
-  { id: 'g6', url: "/car 4.jpg", category: 'Vehicles', span: "col-span-1 row-span-1" },
-  { id: 'g7', url: "/Store.png", category: 'Store', span: "col-span-1 row-span-1" },
-  { id: 'g8', url: "/Trailer.png", category: 'Vehicles', span: "col-span-1 row-span-1" },
-  { id: 'g9', url: "/Guitar.png", category: 'Products', span: "col-span-1 row-span-1" },
-  { id: 'g10', url: "/Store 1.png", category: 'Store', span: "col-span-1 row-span-1" },
+  { id: 'g1', url: "/car-1.jpg", category: 'Vehicles', span: "col-span-2 row-span-2" },
+  { id: 'g2', url: "/motorcycle-1.jpg", category: 'Motorcycles', span: "col-span-1 row-span-1" },
+  { id: 'g3', url: "/truck-2.png", category: 'Vehicles', span: "col-span-1 row-span-1" },
+  { id: 'g4', url: "/car-3.jpg", category: 'Vehicles', span: "col-span-2 row-span-1" },
+  { id: 'g5', url: "/motorcycle-2.jpg", category: 'Motorcycles', span: "col-span-1 row-span-1" },
+  { id: 'g6', url: "/car-4.jpg", category: 'Vehicles', span: "col-span-1 row-span-1" },
+  { id: 'g7', url: "/store.png", category: 'Store', span: "col-span-1 row-span-1" },
+  { id: 'g8', url: "/trailer.png", category: 'Vehicles', span: "col-span-1 row-span-1" },
+  { id: 'g9', url: "/guitar.png", category: 'Products', span: "col-span-1 row-span-1" },
+  { id: 'g10', url: "/store-1.png", category: 'Store', span: "col-span-1 row-span-1" },
 ];
 
 const FAQS = [
@@ -144,6 +144,7 @@ export default function App() {
   const [formDetails, setFormDetails] = useState('');
   const [isWizardVisible, setIsWizardVisible] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedGalleryImage, setSelectedGalleryImage] = useState<GalleryImage | null>(null);
 
   const quoteRef = useRef<HTMLDivElement>(null);
   const detailsRef = useRef<HTMLTextAreaElement>(null);
@@ -294,7 +295,7 @@ export default function App() {
         <section 
           className="relative py-32 px-6 border-b border-brand-border bg-brand-primary overflow-hidden"
           style={{ 
-            backgroundImage: 'linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)), url("/Store 1.png")',
+            backgroundImage: 'linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)), url("/store-1.png")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed'
@@ -425,7 +426,7 @@ export default function App() {
             >
                <div className="relative z-10">
                   <div className="h-[550px] border-4 border-white/10 overflow-hidden shadow-2xl relative">
-                     <img src="/spray painy.png" className="w-full h-full object-cover grayscale-[0.5] hover:grayscale-0 transition-all duration-700" alt="Master the finish with precision tools" />
+                     <img src="/spray-paint.png" className="w-full h-full object-cover grayscale-[0.5] hover:grayscale-0 transition-all duration-700" alt="Master the finish with precision tools" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
                   <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-brand-accent border-4 border-[#111827] flex items-center justify-center p-8 text-white shadow-xl">
@@ -782,7 +783,7 @@ export default function App() {
                           referrerPolicy="no-referrer"
                         />
                         <div 
-                          onClick={() => window.open(img.url, '_blank')}
+                          onClick={() => setSelectedGalleryImage(img)}
                           className="absolute inset-0 bg-brand-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-6 text-center cursor-pointer"
                         >
                            <div className="w-12 h-12 bg-brand-accent rounded-full flex items-center justify-center text-white mb-4 shadow-lg">
@@ -1081,6 +1082,56 @@ export default function App() {
           <MapPin size={14} /> Directions
         </a>
       </div>
+
+      {/* 12. Lightbox Modal */}
+      <AnimatePresence>
+        {selectedGalleryImage && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-brand-primary/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
+            onClick={() => setSelectedGalleryImage(null)}
+          >
+            <motion.button
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 bg-brand-accent text-white rounded-none flex items-center justify-center z-[110] hover:scale-110 transition-transform"
+              onClick={(e) => { e.stopPropagation(); setSelectedGalleryImage(null); }}
+            >
+              <X size={24} />
+            </motion.button>
+            
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-5xl w-full max-h-full flex flex-col items-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative border-4 border-white/10 shadow-2xl overflow-hidden bg-brand-muted">
+                <img 
+                  src={selectedGalleryImage.url} 
+                  className="max-w-full max-h-[80vh] object-contain" 
+                  alt="Full resolution preview" 
+                />
+                <div className="absolute top-0 left-0 bg-brand-accent text-white text-[10px] font-black uppercase tracking-[0.3em] px-4 py-2">
+                  Technical Finish: {selectedGalleryImage.category}
+                </div>
+              </div>
+              
+              <div className="mt-8 text-center">
+                 <div className="inline-flex items-center gap-3 px-6 py-3 border border-white/20 bg-white/5 backdrop-blur-sm mb-4">
+                    <div className="w-2 h-2 bg-brand-accent rounded-full animate-pulse" />
+                    <span className="text-white text-[10px] font-bold uppercase tracking-widest">Spectral Match Confirmed</span>
+                 </div>
+                 <h3 className="text-white font-display font-black uppercase text-2xl tracking-tighter">Request Product Specifications</h3>
+                 <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mt-2">Dales Automotive Paint & Supplies // Colorado Springs</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
