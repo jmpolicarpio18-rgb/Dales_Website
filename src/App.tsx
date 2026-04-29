@@ -57,7 +57,7 @@ interface Product {
 interface GalleryImage {
   id: string;
   url: string;
-  category: 'Vehicles' | 'Motorcycles' | 'Classics' | 'Products' | 'Store';
+  category: 'Vehicles' | 'Motorcycles' | 'Custom' | 'Products';
   span: string;
 }
 
@@ -120,10 +120,10 @@ const GALLERY_IMAGES: GalleryImage[] = [
   { id: 'g4', url: "/car-3.jpg", category: 'Vehicles', span: "col-span-2 row-span-1" },
   { id: 'g5', url: "/motorcycle-2.jpg", category: 'Motorcycles', span: "col-span-1 row-span-1" },
   { id: 'g6', url: "/car-4.jpg", category: 'Vehicles', span: "col-span-1 row-span-1" },
-  { id: 'g7', url: "/store.png", category: 'Store', span: "col-span-1 row-span-1" },
+  { id: 'g7', url: "/store.png", category: 'Custom', span: "col-span-1 row-span-1" },
   { id: 'g8', url: "/trailer.png", category: 'Vehicles', span: "col-span-1 row-span-1" },
   { id: 'g9', url: "/guitar.png", category: 'Products', span: "col-span-1 row-span-1" },
-  { id: 'g10', url: "/store-1.png", category: 'Store', span: "col-span-1 row-span-1" },
+  { id: 'g10', url: "/store-1.png", category: 'Custom', span: "col-span-1 row-span-1" },
 ];
 
 const FAQS = [
@@ -780,7 +780,6 @@ export default function App() {
                           src={img.url.startsWith('http') ? `${img.url}&auto=format&fit=crop` : img.url} 
                           className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" 
                           alt="Paint finish result" 
-                          referrerPolicy="no-referrer"
                         />
                         <div 
                           onClick={() => setSelectedGalleryImage(img)}
